@@ -1,7 +1,10 @@
 # coding: utf-8
 import re
+import sys
 
-f = open("test.csv","r",encoding="utf-8")
+file_name = sys.argv[1]
+
+f = open(file_name,"r",encoding="utf-8")
 json = open("result.json","w")
 
 fLines = f.readlines()
