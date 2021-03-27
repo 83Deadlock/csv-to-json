@@ -1,0 +1,20 @@
+[
+	{
+		"numero": "A71823",
+		"nome": "Ana Maria",
+		"curso": "MIEI",
+		"notas_max": 18
+	},
+	{
+		"numero": "A89765",
+		"nome": "João Martins",
+		"curso": "LCC",
+		"notas_max": 16
+	},
+	{
+		"numero": "A54321",
+		"nome": "Paulo Correia",
+		"curso": "MIEFIS",
+		"notas_max": 17
+	}
+]

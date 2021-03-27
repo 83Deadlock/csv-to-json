@@ -2,12 +2,18 @@
 import re
 
 f = open("test.csv","r",encoding="utf-8")
+json = open("result.json","w")
 
-headers = re.split(r';|\n',f.readline())
+fLines = f.readlines()
+output = 0
+
+headers = re.split(r';|\n',fLines[0])
 headers.pop()
 notas = []
 func = ""
 nota = 0
+
+json.write("[")
 
 def funcDef(func,notas):
     n = len(notas)
@@ -25,10 +31,33 @@ def funcDef(func,notas):
         total = -1
     return total
 
-for line in f:
+def printJson(headers,values,func,nota):
+    json.write("\n\t{")
+    json.write(f"\n\t\t\"{headers[0]}\": \"{values[0]}\",")
+    json.write(f"\n\t\t\"{headers[1]}\": \"{values[1]} {values[2]}\",")
+    json.write(f"\n\t\t\"{headers[2]}\": \"{values[3]}\",")
+    if(isinstance(nota,float)):
+        fNota = "{:.2f}".format(nota)
+        json.write(f"\n\t\t\"{func}\": {fNota}")    
+    else:
+        json.write(f"\n\t\t\"{func}\": {nota}")
+    
+    if len(fLines) == lines_checked:
+        json.write("\n\t}")
+    else:
+        json.write("\n\t},")
+
+fLines.pop(0)
+
+lines_checked = 0
+
+for line in fLines:
+    lines_checked = lines_checked + 1
+    values = []
+    notas = []
     i = 4
-    res = re.split(r'\W+',line)
-    res.pop()
+    values = re.split(r'\W+',line)
+    values.pop()
 
     aux = re.split(r'\*|\n',headers[3]) 
 
@@ -39,17 +68,19 @@ for line in f:
             aux.pop()
             func = aux[0]
             i = 4
-            while i < len(res):
-                notas.append(int(res[i]))
+            while i < len(values):
+                notas.append(int(values[i]))
                 i = i+1
+            printJson(headers,values,func,notas)
         else:
-            func = aux[0] + aux[1]
+            func = aux[0] + '_' + aux[1]
             i = 4
-            while i < len(res):
-                notas.append(int(res[i]))
+            while i < len(values):
+                notas.append(int(values[i]))
                 i = i+1
-            nota = funcDef(aux[1],notas)
+            printJson(headers,values,func,funcDef(aux[1],notas))
     else:
         func = headers[3]
+        printJson(headers,values,func,notas)
 
-print("]")
+json.write("\n]")
