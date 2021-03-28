@@ -26,9 +26,6 @@ lines_total = len(fLines)   # Total number of lines on the file
 for i in range(len(headers)):
     headers[i] = re.sub('\*','_',headers[i])
 
-
-json.write("[")                             # Every JSON file begins with an opening square bracket and ends with a closing square bracket
-
 # Given a function and a list of grades, execute the given function on the list and returns the result (or -1 if it is an invalid function)
 # Functions allowed as of the moment of implementation: max,min,avg,sum
 def funcDef(func,listArg):
@@ -66,7 +63,7 @@ def printJson(headers,values):
             if(isinstance(values[i],float)):                 # There's a possiblity that the function called returns a float value, in which case we limit the decimal points to 2
                 fNota = "{:.2f}".format(values[i])
                 json.write(f"\n\t\t\"{headers[i]}\": {fNota},")    
-            elif(isinstance(values[i], int)):
+            elif(isinstance(values[i], int) or isinstance(values[i], list)):
                 json.write(f"\n\t\t\"{headers[i]}\": {values[i]},")
             else:
                 json.write(f"\n\t\t\"{headers[i]}\": \"{values[i]}\",")
@@ -90,6 +87,8 @@ def RepresentFloat(s):
         return True
     except ValueError:
         return False
+
+json.write("[")                             # Every JSON file begins with an opening square bracket and ends with a closing square bracket
 
 for i in range(lines_total):
     lines_checked = lines_checked + 1
@@ -131,7 +130,6 @@ for i in range(lines_total):
                 func = funcs[1]
                 values[n] = funcDef(func, aux) 
             
-    
     printJson(headers, values)
             
 json.write("\n]")
