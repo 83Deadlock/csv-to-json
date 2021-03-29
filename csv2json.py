@@ -15,7 +15,8 @@ headers = re.split(r';|\n',fLines[0])       # The first line contains the header
 headers.pop()                               # Last item captured is an empty string, we could just leave it, wouldn't make any trouble
 
 listsIndex = []
-for i in range(len(headers)):
+headers_size = len(headers)
+for i in range(headers_size):
     if '*' in headers[i]:
         listsIndex.append(i)
 
@@ -23,7 +24,7 @@ fLines.pop(0)       # After knowing the headers, we can remove the first line
 lines_checked = 0   # Number of lines we checked -> we use this number in the print function to know if the current line is the last one
 lines_total = len(fLines)   # Total number of lines on the file
 
-for i in range(len(headers)):
+for i in range(headers_size):
     headers[i] = re.sub('\*','_',headers[i])
 
 # Given a function and a list of grades, execute the given function on the list and returns the result (or -1 if it is an invalid function)
@@ -50,7 +51,7 @@ def funcDef(func,listArg):
 def printJson(headers,values):
     json.write("\n\t{")
     
-    for i in range(len(headers)):
+    for i in range(headers_size):
         if i + 1 == len(headers):
             if(isinstance(values[i],float)):                 # There's a possiblity that the function called returns a float value, in which case we limit the decimal points to 2
                 fNota = "{:.2f}".format(values[i])
