@@ -1,4 +1,4 @@
-numero;nome;curso;notas*avg;cidade;idade;genero;nacionalidade;bolseiro;trabalhadorEstudante
+numero;nome;curso;notas*max;cidade;idade;genero;nacionalidade;bolseiro;trabalhadorEstudante
 A71823;Ana Maria;MIEI;(12,14,15,18);Braga;18;Masculino;Portuguesa;Não;Sim
 A89765;João Martins;LCC;(11,16,13);Braga;18;Masculino;Portuguesa;Não;Sim
 A54321;Paulo Correia;MIEFIS;(17);Braga;18;Masculino;Portuguesa;Não;Sim

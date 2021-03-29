@@ -2,11 +2,11 @@
 import re
 import sys
 
-file_name = sys.argv[1] # Gets name of .csv file to be converted
-
+file_name = sys.argv[1]                     # Gets name of .csv file to be converted
 f = open(file_name,"r",encoding="utf-8")    # Opens the file with permissions to read
 
 fileOutName = re.sub(r"\.csv",".json",file_name)
+
 json = open(fileOutName,"w",encoding="utf-8") # Opens/Creates the output file with permissions to write
 
 fLines = f.readlines()                      # Read every line to a list       
@@ -20,12 +20,12 @@ for i in range(headers_size):
     if '*' in headers[i]:
         listsIndex.append(i)
 
-fLines.pop(0)       # After knowing the headers, we can remove the first line 
-lines_checked = 0   # Number of lines we checked -> we use this number in the print function to know if the current line is the last one
-lines_total = len(fLines)   # Total number of lines on the file
+fLines.pop(0)                                       # After knowing the headers, we can remove the first line 
+lines_checked = 0                                   # Number of lines we checked -> we use this number in the print function to know if the current line is the last one
+lines_total = len(fLines)                           # Total number of lines on the file
 
-for i in range(headers_size):
-    headers[i] = re.sub('\*','_',headers[i])
+for i in listsIndex:
+    headers[i] = re.sub(r'\*','_',headers[i])
 
 # Given a function and a list of grades, execute the given function on the list and returns the result (or -1 if it is an invalid function)
 # Functions allowed as of the moment of implementation: max,min,avg,sum
@@ -53,7 +53,7 @@ def printJson(headers,values):
     
     for i in range(headers_size):
         if i + 1 == len(headers):
-            if(isinstance(values[i],float)):                 # There's a possiblity that the function called returns a float value, in which case we limit the decimal points to 2
+            if(isinstance(values[i],float)):                                     # There's a possiblity that the function called returns a float value, in which case we limit the decimal points to 2
                 fNota = "{:.2f}".format(values[i])
                 json.write(f"\n\t\t\"{headers[i]}\": {fNota}")    
             elif(isinstance(values[i], int) or isinstance(values[i], list)):
@@ -61,7 +61,7 @@ def printJson(headers,values):
             else:
                 json.write(f"\n\t\t\"{headers[i]}\": \"{values[i]}\"")
         else:
-            if(isinstance(values[i],float)):                 # There's a possiblity that the function called returns a float value, in which case we limit the decimal points to 2
+            if(isinstance(values[i],float)):                                       # There's a possiblity that the function called returns a float value, in which case we limit the decimal points to 2
                 fNota = "{:.2f}".format(values[i])
                 json.write(f"\n\t\t\"{headers[i]}\": {fNota},")    
             elif(isinstance(values[i], int) or isinstance(values[i], list)):
@@ -103,34 +103,34 @@ for i in range(lines_total):
         aux.pop()
         aux.pop(0)
         
-        if '_' in headers[n]:
-            funcs = re.split(r'_',headers[n])
 
-            if(funcs[1] == ''):
-                headers[n] = re.sub(r'_','',headers[n])
-                if RepresentsInt(aux[0]):
-                    listInts = []
-                    for index in range(len(aux)):
-                        aux[index] = int(aux[index])
-                elif RepresentFloat(aux[0]):
-                    listFloats = []
-                    for index in range(len(aux)):
-                        aux[index] = float(aux[index])
-                values[n] = aux
+        funcs = re.split(r'_',headers[n])
+
+        if(funcs[1] == ''):
+            headers[n] = re.sub(r'_','',headers[n])
+            if RepresentsInt(aux[0]):
+                listInts = []
+                for index in range(len(aux)):
+                    aux[index] = int(aux[index])
+            elif RepresentFloat(aux[0]):
+                listFloats = []
+                for index in range(len(aux)):
+                    aux[index] = float(aux[index])
+            values[n] = aux
                 
+        else:
+            if RepresentsInt(aux[0]):
+                listInts = []
+                for index in range(len(aux)):
+                    aux[index] = int(aux[index])
+            elif RepresentFloat(aux[0]):
+                listFloats = []
+                for index in range(len(aux)):
+                    aux[index] = float(aux[index])
             else:
-                if RepresentsInt(aux[0]):
-                    listInts = []
-                    for index in range(len(aux)):
-                        aux[index] = int(aux[index])
-                elif RepresentFloat(aux[0]):
-                    listFloats = []
-                    for index in range(len(aux)):
-                        aux[index] = float(aux[index])
-                else:
-                    aux = "INVALID_INPUT"
-                func = funcs[1]
-                values[n] = funcDef(func, aux) 
+                aux = "INVALID_INPUT"
+            func = funcs[1]
+            values[n] = funcDef(func, aux) 
             
     printJson(headers, values)
             
