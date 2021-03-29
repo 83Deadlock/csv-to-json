@@ -107,6 +107,7 @@ for i in range(lines_total):
             funcs = re.split(r'_',headers[n])
 
             if(funcs[1] == ''):
+                headers[n] = re.sub(r'_','',headers[n])
                 if RepresentsInt(aux[0]):
                     listInts = []
                     for index in range(len(aux)):
