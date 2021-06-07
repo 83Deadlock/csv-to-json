@@ -50,24 +50,34 @@ def funcDef(func,listArg):
 # We can trat each line on .csv file as a block of information on .json files. This function will print each block.
 def printJson(headers,values):
     json.write("\n\t{")
-    
+    colunas = []
+    for linha in headers:                   # It was needed to make a copy of our headers list, since the original can't be changed
+        colunas.append(linha)               # during the execution of the script.
+
+    for n in listsIndex:
+        aux = colunas[n]
+        auxList = re.split(r'_',aux)
+        if '' in auxList:
+            colunas[n] = re.sub(r'_','',colunas[n])
+
     for i in range(headers_size):
+
         if i + 1 == len(headers):
             if(isinstance(values[i],float)):                                     # There's a possiblity that the function called returns a float value, in which case we limit the decimal points to 2
                 fNota = "{:.2f}".format(values[i])
-                json.write(f"\n\t\t\"{headers[i]}\": {fNota}")    
+                json.write(f"\n\t\t\"{colunas[i]}\": {fNota}")    
             elif(isinstance(values[i], int) or isinstance(values[i], list)):
-                json.write(f"\n\t\t\"{headers[i]}\": {values[i]}")
+                json.write(f"\n\t\t\"{colunas[i]}\": {values[i]}")
             else:
-                json.write(f"\n\t\t\"{headers[i]}\": \"{values[i]}\"")
+                json.write(f"\n\t\t\"{colunas[i]}\": \"{values[i]}\"")
         else:
             if(isinstance(values[i],float)):                                       # There's a possiblity that the function called returns a float value, in which case we limit the decimal points to 2
                 fNota = "{:.2f}".format(values[i])
-                json.write(f"\n\t\t\"{headers[i]}\": {fNota},")    
+                json.write(f"\n\t\t\"{colunas[i]}\": {fNota},")    
             elif(isinstance(values[i], int) or isinstance(values[i], list)):
-                json.write(f"\n\t\t\"{headers[i]}\": {values[i]},")
+                json.write(f"\n\t\t\"{colunas[i]}\": {values[i]},")
             else:
-                json.write(f"\n\t\t\"{headers[i]}\": \"{values[i]}\",")
+                json.write(f"\n\t\t\"{colunas[i]}\": \"{values[i]}\",")
         
         
     if len(fLines) == lines_checked:            #Each block of information is followed by a comma, except the last one
@@ -104,10 +114,9 @@ for i in range(lines_total):
         aux.pop(0)
         
 
-        funcs = re.split(r'_',headers[n])
-
-        if(funcs[1] == ''):
-            headers[n] = re.sub(r'_','',headers[n])
+        funcs = re.split(r'_',headers[n])                   # A change was made here because we can not change the original headers
+                                                            # in order to determine wether a header is of a list or not
+        if '' in funcs:     
             if RepresentsInt(aux[0]):
                 listInts = []
                 for index in range(len(aux)):
