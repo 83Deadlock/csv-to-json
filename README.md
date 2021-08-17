@@ -1,8 +1,6 @@
 # csv-to-json
-TP1 de Processamento de Linguagens 2020/21
+Practical assessment on Language Processing 2020/21 @ Universidade do Minho
 
-Conversor de ficheiros .csv para ficheiros .json em Python usando Expressões Regulares.
+CSV to JSON File Converter using RegEx, built with Python.
 
-André Vieira
-José Ferreira
-Simão Brito
+To execute te script, just execute it with Python and pass a csv file path as an argument on command line.
